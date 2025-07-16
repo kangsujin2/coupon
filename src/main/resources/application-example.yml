@@ -1,0 +1,81 @@
+# application-example.yml
+
+spring:
+  application:
+    name: ${APP_NAME}
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 100
+        fetch_size: 100
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    time-zone: Europe/London
+
+server:
+  port: ${SERVER_PORT}
+
+expire:
+  defaultTime: ${EXPIRE_DEFAULT_TIME:3}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: ${DB_DRIVER_CLASS_NAME}
+    url: ${JDBC_DATABASE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    driver-class-name: ${DB_TEST_DRIVER_CLASS_NAME}
+    url: ${JDBC_TEST_DATABASE_URL}
+    username: ${DB_TEST_USERNAME}
+    password: ${DB_TEST_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_TEST_DDL_AUTO:create-drop}
+    show-sql: ${JPA_TEST_SHOW_SQL:true}
+  redis:
+    host: ${REDIS_TEST_HOST}
+    port: ${REDIS_TEST_PORT}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: ${DB_DRIVER_CLASS_NAME}
+    url: ${JDBC_DATABASE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}

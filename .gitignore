@@ -1,0 +1,48 @@
+HELP.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Java / Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Environment / Config Files
+.env
+.env.*
+*.local
+*.dev
+*.test
+*.prod
+
+# Spring Boot configuration files
+application.yml
+application-*.yml
+application.properties
+application-*.properties
+
+# Docker
+docker-compose.yml
+docker-compose.*.yml
+Dockerfile
+.docker/
+
+# Logs
+*.log
+
+# Node (optional)
+node_modules/
+
+# Template files (included)
+!application-example.yml
+!.env.example
+!docker-compose.example.yml
