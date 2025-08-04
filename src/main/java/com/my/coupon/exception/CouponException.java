@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class CouponException extends RuntimeException{
-    private final ErrorCode errorCode;
+    private final CouponErrorCode couponErrorCode;
 
-    public CouponException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public CouponException(CouponErrorCode couponErrorCode) {
+        super(couponErrorCode.getMessage());
+        this.couponErrorCode = couponErrorCode;
     }
 }
