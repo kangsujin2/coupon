@@ -1,7 +1,7 @@
 package com.my.coupon.entity;
 
 import com.my.coupon.exception.CouponException;
-import com.my.coupon.exception.ErrorCode;
+import com.my.coupon.exception.CouponErrorCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,10 +58,10 @@ public class Coupon extends BaseEntity{
 
     public boolean isCouponAvailable() {
         if (!isQuantityAvailable()) {
-            throw new CouponException(ErrorCode.INVALID_COUPON_ISSUE_QUANTITY);
+            throw new CouponException(CouponErrorCode.INVALID_COUPON_ISSUE_QUANTITY);
         }
         if (!isDateAvailable()) {
-            throw new CouponException(ErrorCode.INVALID_COUPON_ISSUE_DATE);
+            throw new CouponException(CouponErrorCode.INVALID_COUPON_ISSUE_DATE);
         }
         return true;
     }
