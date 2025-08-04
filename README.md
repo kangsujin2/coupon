@@ -9,11 +9,12 @@ In a first-come-first-served coupon system, when multiple users simultaneously r
 - Inventory Management Errors: More coupons issued than actual stock
 - Data Consistency Violations: Mismatch between issued quantity and actual issuance records
 
-To solve these concurrency issues, this project implements and performance-tests 4 different strategies:
+To solve these concurrency issues, this project implements and performance-tests 5 different strategies:
 - **Basic Logic**
 - **Pessimistic Locking**
 - **Optimistic Locking**
 - **Redis Distributed Locking**
+- **Redis + Kafka Hybrid Processing**
 
 To further improve performance under high concurrency, the project also includes **Redis-based Optimizations**:
 - **Redis Cache Pre-check** 
@@ -33,6 +34,8 @@ Each branch in this project implements a different concurrency strategy, built o
 - [strategy/pessimistic](https://github.com/kangsujin2/coupon/tree/strategy/pessimistic) – Pessimistic locking
 - [strategy/optimistic](https://github.com/kangsujin2/coupon/tree/strategy/optimistic) – Optimistic locking
 - [strategy/redis](https://github.com/kangsujin2/coupon/tree/strategy/redis) – Redis-based distributed lock
+- [strategy/redis-kafka](https://github.com/kangsujin2/coupon/tree/strategy/redis-kafka) – Redis atomic validation + Kafka asynchronous processing
+
 
 For a detailed comparison of each strategy, see the tables below.
 
@@ -45,6 +48,7 @@ For a detailed comparison of each strategy, see the tables below.
 | Pessimistic Locking | Database row-level locks<br> (`SELECT ... FOR UPDATE`) | • Strong consistency<br>• Prevents race conditions<br>• Database-level guarantees | • Performance bottleneck<br>• Lock contention<br>• Potential deadlocks | 
 | Optimistic Locking | Conditional updates<br> (`WHERE quantity > 0`) | • No DB-level locks<br>• Fast under low contention | • Retry logic required<br>• Wasted work on conflict | 
 | Redis Lock | Distributed lock<br>(Redisson) | • Distributed system support<br>• High performance<br>• Scalable across services | • External dependency<br>• Redis availability risk | 
+| Redis + Kafka | Atomic Redis validation + async Kafka queue | • Extremely high throughput<br>• Async DB writes<br>• Event buffering<br>• Strict deduplication via Lua|• Operational complexity (infra)<br>• Eventual consistency|
 
 <br><br>
 ## 🔹 4. Redis-based Optimizations
