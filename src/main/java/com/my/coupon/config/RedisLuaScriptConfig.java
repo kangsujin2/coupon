@@ -36,6 +36,7 @@ public class RedisLuaScriptConfig {
             return {-2, current_count}
         end
         
+        -- 4. Atomically reserve coupon for user
         local new_count = redis.call('INCR', count_key)
         redis.call('SADD', set_key, user_id)
         redis.call('EXPIRE', count_key, 3600)
@@ -43,6 +44,32 @@ public class RedisLuaScriptConfig {
         
         return {1, new_count}
         """;
+
+        return RedisScript.of(script, List.class);
+    }
+
+    @Bean
+    public RedisScript<List> rollbackScript() {
+        String script = """
+            -- KEYS: [count_key, set_key]
+            -- ARGV: [user_id]
+            
+            local count_key = KEYS[1]
+            local set_key = KEYS[2]
+            local user_id = ARGV[1]
+            
+            -- Check if user actually exists in the set
+            local user_exists = redis.call('SISMEMBER', set_key, user_id)
+            if user_exists == 1 then
+                -- Remove user from set
+                redis.call('SREM', set_key, user_id)
+                -- Decrement count
+                local new_count = redis.call('DECR', count_key)
+                return {1, new_count}
+            else
+                return {0, 0}
+            end
+            """;
 
         return RedisScript.of(script, List.class);
     }
